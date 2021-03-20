@@ -15,7 +15,10 @@ class TasksController extends Controller
     public function index()
     {
         //
-        $tasks = Task::all()->where('is_done', 'false');
+        
+        $tasks = Task::all();
+        
+
         return view('tasks.index', ['tasks' => $tasks]);
     }
 
@@ -39,8 +42,8 @@ class TasksController extends Controller
     {
         $all = $request->all();
         $task = Task::create($all);
-        return response()->json($task);
         //return redirect()->route('tasks.index');
+        return response()->json($task);
     }
 
     /**
@@ -72,13 +75,13 @@ class TasksController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Task $task)
+    public function update(Request $request, $id)
     {
-        //
 
+        $task = Task::find($id);
         $task->is_done = true;
-        $tasks->save();
-        return redirect()->route('tasks.index');
+        $task->save();
+        
     }
 
     /**
@@ -90,5 +93,8 @@ class TasksController extends Controller
     public function destroy($id)
     {
         //
+        $task = Task::find($id);
+        $task->delete();
+        //return redirect()->route('tasks.index');
     }
 }
